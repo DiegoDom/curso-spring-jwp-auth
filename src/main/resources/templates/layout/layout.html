@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <title th:text="'Spring Boot: MVC + Thymeleaf + Data JPA - ' + ${titulo}"></title>
+</head>
+
+<body>
+
+    <header th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" th:href="@{/listar}">Spring Boot</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{/listar}" th:text="#{text.menu.customer}">Clientes</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mr-5">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}" sec:authorize="!isAuthenticated()" th:text="#{text.menu.signin}">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item dropdown mr-4" sec:authorize="isAuthenticated()">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                            <span sec:authentication="name"></span>
+                        </a>
+                        <div class="dropdown-menu w-25" aria-labelledby="navbarDropdown">
+                            <form th:action="@{/logout}" method="post" id="logoutForm">
+                                <button class="dropdown-item p-1 text-center" onclick="document.getElementById('logoutForm').submit();" type="submit" th:text="#{text.menu.signout}">Cerrar
+                                    sesión</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+        <div class="container mt-2">
+            <div class="alert alert-success my-2 alert-dismissible fade show" role="alert" th:if="${success != null}">
+                <h6 th:text="${success}"></h6>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-danger my-2 alert-dismissible fade show" role="alert" th:if="${error != null}">
+                <h6 th:text="${error}"></h6>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-info my-2 alert-dismissible fade show" role="alert" th:if="${info != null}">
+                <h6 th:text="${info}"></h6>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-warning my-2 alert-dismissible fade show" role="alert" th:if="${warning != null}">
+                <h6 th:text="${warning}"></h6>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+
+    </div>
+    <footer class="container mb-1 text-secondary" th:fragment="footer">
+        <hr>
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <img th:src="@{/images/spring-logo.svg}" alt="Spring Logo" class="img-fluid w-50" />
+                <p class="m-0">Powered by <a href="https://spring.io/projects/spring-boot" target="_blank">SpringBoot</a> y <a href="https://www.thymeleaf.org/" target="_blank">Thymeleaf</a></p>
+                <p class="m-0">&copy; DiegoDom 2022. <span th:text="#{text.footer.copy}"></span>
+                </p>
+            </div>
+            <div class="col-md-6 col-12 d-flex justify-content-end align-items-start">
+                <a class="btn btn-sm btn-outline-dark mr-1" th:href="@{/locale(lang=es_ES)}">ES</a>
+                <a class="btn btn-sm btn-outline-dark mr-1" th:href="@{/locale(lang=en_US)}">EN</a>
+                <a class="btn btn-sm btn-outline-dark" th:href="@{/locale(lang=de_DE)}">DE</a>
+            </div>
+        </div>
+        <script th:src="@{/js/jquery.min.js}"></script>
+        <script th:src="@{/js/popper.min.jss}"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+        <script th:src="@{/js/jquery-ui.min.js}"></script>
+    </footer>
+
+</body>
+
+</html>

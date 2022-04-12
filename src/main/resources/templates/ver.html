@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+    <div id="i18n_eliminar_factura" th:text="#{text.cliente.factura.eliminarOk}" style="display: none;"></div>
+    <header th:replace="layout/layout :: header"></header>
+    <div class="container py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="text-secondary my-4" th:text="${titulo}"></h3>
+            <a th:href="@{/listar}" class="btn btn-sm btn-outline-danger">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                <span th:text="#{text.regresar.boton}">Regresar</span>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-3" th:if="${#strings.length(cliente.foto) > 0}">
+                <img class="img-thumbnail rounded" th:src="@{'/uploads/' + ${cliente.foto}}" th:alt="'Foto de ' + ${cliente.nombre}">
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="cliente__detalle">
+                    <p class="m-0" th:text="#{text.cliente.nombre}">Nombre:</p>
+                    <h3 class="m-0" th:text="${cliente.nombre}"></h3>
+                </div>
+                <div class="cliente__detalle">
+                    <p class="m-0" th:text="#{text.cliente.apellido}">Apellido:</p>
+                    <h3 class="m-0" th:text="${cliente.apellido}"></h3>
+                </div>
+                <div class="cliente__detalle">
+                    <p class="m-0" th:text="#{text.cliente.email}">Correo electrónico:</p>
+                    <h3 class="m-0" th:text="${cliente.email}"></h3>
+                </div>
+                <div class="cliente__detalle">
+                    <p class="m-0" th:text="#{text.cliente.createdAt}">Fecha de creación:</p>
+                    <h3 class="m-0" th:text="${cliente.createdAt}"></h3>
+                </div>
+            </div>
+            <div class="col-12 mt-1">
+                <hr>
+                <div class="d-flex justify-content-between align-items-center py-2">
+                    <h4 th:text="#{text.cliente.detalle.facturas.titulo}">Facturas</h4>
+                    <a th:href="@{/factura/form/} + ${cliente.id}" sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-info">
+                        <span th:text="#{text.factura.form.titulo}">Crear factura</span>
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" th:text="#{text.cliente.factura.folio}">Folio</th>
+                                <th th:text="#{text.cliente.factura.descripcion}">Descripción</th>
+                                <th th:text="#{text.cliente.factura.fecha}">Fecha</th>
+                                <th th:text="#{text.cliente.factura.total}">Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody th:if="${#lists.size(cliente.facturas) > 0 }">
+                            <tr th:each="una_factura: ${cliente.facturas}">
+                                <td style="width: 50px;" class="text-center" sec:authorize="!hasRole('ROLE_ADMIN')" th:text="${una_factura.id}"></td>
+                                <td style="width: 50px;" class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <a th:href="@{/factura/ver/} + ${una_factura.id}" th:text="${una_factura.id}"></a>
+                                </td>
+                                <td th:text="${una_factura.descripcion}"></td>
+                                <td th:text="${una_factura.createdAt}"></td>
+                                <td th:text="${una_factura.total}"></td>
+                                <td style="width: 50px;" class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <a th:href="@{/factura/eliminar/} + ${una_factura.id}" class="btn btn-sm btn-outline-danger" onclick="return confirm(document.getElementById('i18n_eliminar_factura').innerHTML);">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody th:if="${#lists.size(cliente.facturas) <= 0 }">
+                            <tr class="text-center">
+                                <td colspan="5">Este cliente aún no cuenta con facturas...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="layout/layout :: footer"></footer>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+    <header th:replace="layout/layout :: header"></header>
+    <div class="forbidden__container">
+        <p><span th:text="#{text.security.error.403.titulo}">Acceso denegado </span> <i class="fa fa-exclamation-circle" aria-hidden="true"></i></p>
+        <span th:utext="#{text.security.error.403.permiso(${#authentication.name})}"></span>
+        <a th:href="@{/}" class="btn btn-outline-dark" role="button">
+            <small th:text="#{text.security.error.403.volver}">Regresar a la página principal</small> <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+    </div>
+    <footer th:replace="layout/layout :: footer"></footer>
+</body>
+
+</html>
